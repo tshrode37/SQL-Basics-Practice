@@ -4,7 +4,6 @@ Exercise from Khan Academy
 1st 3 rounds of the NFL 2015 Draft
 Collected by: https://www.khanacademy.org/profile/BobbyandKaren/
 
-https://gist.github.com/pamelafox/3360f582f3309dd4c25b
 
 Using this data set, the goal is to use advanced SELECT queries to discover things about the data. Things like:
 
@@ -226,4 +225,29 @@ INSERT INTO picks (pick_number, name, college, picked_by, position)
 INSERT INTO picks (pick_number, name, college, picked_by, position)
   VALUES(82,"Lorenzo Mauldin","Louisville","NY Jets","OLB");
   
- 
+ /* QUERIES BELOW */
+
+SELECT MAX(pick_number) FROM picks;
+
+SELECT MIN(pick_number) FROM picks;
+
+SELECT COUNT(*) AS count, picked_by FROM picks GROUP BY picked_by ORDER BY count;
+
+SELECT COUNT(*) AS count, college FROM picks WHERE college LIKE "%state%" OR college LIKE "%st.%" GROUP BY college;
+
+SELECT COUNT(*) AS count, position FROM picks GROUP BY position HAVING count > 4 AND count <10;
+
+SELECT COUNT(*) AS count, ROUND((count(position)*1.0)/101, 3) AS percentage_positions,
+    CASE
+        WHEN position IN ("C", "OG", "OT", "QB", "HB", "FB", "WR", "TE", "RB") THEN "offensive"
+        WHEN position IN ("DT", "DE", "LB", "MLB", "OLB", "CB", "S", "ILB") THEN "defensive"
+        ELSE "special teams"
+    END AS pos_type
+FROM picks GROUP BY pos_type;
+
+/*
+RESOURCES:
+https://stackoverflow.com/questions/8895927/selecting-casting-output-as-integer-in-sql
+https://www.tek-tips.com/viewthread.cfm?qid=1255328
+https://gist.github.com/pamelafox/3360f582f3309dd4c25b
+*/
